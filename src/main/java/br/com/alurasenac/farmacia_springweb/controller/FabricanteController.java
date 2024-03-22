@@ -1,11 +1,15 @@
 package br.com.alurasenac.farmacia_springweb.controller;
 
 import br.com.alurasenac.farmacia_springweb.model.produto.Fabricante;
-import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosDetalhamentoFabricante;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosRetornoFabricanteDto;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosRetornoProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.produto.dto.FabricanteDto;
 import br.com.alurasenac.farmacia_springweb.model.repository.FabricanteRepositury;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,14 @@ public class FabricanteController {
 
         var uri = uriBilder.path("/medicos/{id}").buildAndExpand(fabricante.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoFabricante(fabricante));
+        return ResponseEntity.created(uri).body(new DadosRetornoFabricanteDto(fabricante));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosRetornoFabricanteDto>> listar(@PageableDefault(size = 5, sort = {"nome"}) Pageable paginacao) {
+
+        var page = fabricanteRepositury.findAll(paginacao).map(DadosRetornoFabricanteDto::new);
+
+        return ResponseEntity.ok(page);
     }
 }

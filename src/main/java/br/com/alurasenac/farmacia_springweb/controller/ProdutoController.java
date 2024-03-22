@@ -2,18 +2,18 @@ package br.com.alurasenac.farmacia_springweb.controller;
 
 import br.com.alurasenac.farmacia_springweb.model.produto.Fabricante;
 import br.com.alurasenac.farmacia_springweb.model.produto.Produto;
-import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosDetalhamentoProduto;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosRetornoProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.produto.dto.ProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.repository.FabricanteRepositury;
 import br.com.alurasenac.farmacia_springweb.model.repository.ProdutoRepositury;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -38,6 +38,14 @@ public class ProdutoController {
 
         var uri = uriBilder.path("/medicos/{id}").buildAndExpand(produto.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoProduto(produto));
+        return ResponseEntity.created(uri).body(new DadosRetornoProdutoDto(produto));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosRetornoProdutoDto>> listar(@PageableDefault(size = 5, sort = {"nome"}) Pageable paginacao) {
+
+        var page =  produtoRepositury.findAll(paginacao).map(DadosRetornoProdutoDto::new);
+
+        return ResponseEntity.ok(page);
     }
 }

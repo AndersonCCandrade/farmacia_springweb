@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FabricanteRepositury extends JpaRepository<Fabricante, Integer> {
 
     Fabricante findByNome(String nome);
+
 }
