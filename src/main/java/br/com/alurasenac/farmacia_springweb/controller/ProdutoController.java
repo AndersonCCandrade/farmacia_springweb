@@ -58,4 +58,13 @@ public class ProdutoController {
 
         return ResponseEntity.ok(new DadosRetornoProdutoDto(Produto));
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Integer id) {
+
+       produtoRepositury.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
