@@ -1,5 +1,8 @@
 package br.com.alurasenac.farmacia_springweb.model.produto;
 
+import br.com.alurasenac.farmacia_springweb.controller.FabricanteController;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosAtualizacaoFabricanteDto;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosAtualizacaoProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.produto.dto.ProdutoDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,5 +30,18 @@ public class Produto {
         this.descricao = dados.descricao();
         this.preco = dados.preco();
         this.fabricante = fabricante;
+    }
+
+    public void atualizarInformacoes(DadosAtualizacaoProdutoDto dados) {
+        if(dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.descricao() != null) {
+            this.descricao = dados.descricao();
+        }
+        if (dados.preco() != null) {
+            this.preco=(dados.preco());
+        }
+
     }
 }

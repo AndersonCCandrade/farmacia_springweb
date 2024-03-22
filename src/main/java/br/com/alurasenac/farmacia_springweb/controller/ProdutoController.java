@@ -2,6 +2,8 @@ package br.com.alurasenac.farmacia_springweb.controller;
 
 import br.com.alurasenac.farmacia_springweb.model.produto.Fabricante;
 import br.com.alurasenac.farmacia_springweb.model.produto.Produto;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosAtualizacaoFabricanteDto;
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosAtualizacaoProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.produto.dto.DadosRetornoProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.produto.dto.ProdutoDto;
 import br.com.alurasenac.farmacia_springweb.model.repository.FabricanteRepositury;
@@ -47,5 +49,13 @@ public class ProdutoController {
         var page =  produtoRepositury.findAll(paginacao).map(DadosRetornoProdutoDto::new);
 
         return ResponseEntity.ok(page);
+    }
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoProdutoDto dados) {
+        var Produto = produtoRepositury.getReferenceById(dados.id());
+        Produto.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosRetornoProdutoDto(Produto));
     }
 }
