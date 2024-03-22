@@ -1,5 +1,6 @@
 package br.com.alurasenac.farmacia_springweb.model.produto;
 
+import br.com.alurasenac.farmacia_springweb.model.produto.dto.FabricanteDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,4 +19,8 @@ public class Fabricante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
+
+    public Fabricante(FabricanteDto dados) {
+        this.nome= dados.nome();
+    }
 }
